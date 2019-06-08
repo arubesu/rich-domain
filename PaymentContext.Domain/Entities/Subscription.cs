@@ -1,10 +1,11 @@
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using PaymentContext.Shared.Entities;
 
 namespace PaymentContext.Domain.Entities
 {
-    public class Subscription
+    public class Subscription : Entity
     {
         private List<Payment> _payments;
 
@@ -28,7 +29,7 @@ namespace PaymentContext.Domain.Entities
             Active = true;
             LastUpdatedDate = DateTime.Now;
         }
-        
+
         public void Inactivate()
         {
             Active = false;

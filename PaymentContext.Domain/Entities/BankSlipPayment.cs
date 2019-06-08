@@ -1,11 +1,12 @@
 using System;
+using PaymentContext.Domain.ValueObjects;
 
 namespace PaymentContext.Domain.Entities
 {
     public class BankSlipPayment : Payment
     {
         public BankSlipPayment(string number, string barCode, DateTime paidDate, DateTime expireDate, decimal total, decimal totalPaid,
-            string address, string payer, string payerDocument, string payerEmail) :
+            Address address, string payer, Document payerDocument, Email payerEmail) :
             base(paidDate, expireDate, total, totalPaid,
              address, payer, payerDocument, payerEmail)
         {
