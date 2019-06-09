@@ -1,5 +1,7 @@
+using Flunt.Validations;
 using PaymentContext.Domain.Enumerations;
 using PaymentContext.Shared.Entities;
+using PaymentContext.Shared.Extensions;
 
 namespace PaymentContext.Domain.ValueObjects
 {
@@ -9,6 +11,11 @@ namespace PaymentContext.Domain.ValueObjects
         {
             Number = number;
             Type = type;
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsTrue(Number.IsValid(),"Document.Number", "Document is not valid!")
+            );
         }
 
         public string Number { get; private set; }

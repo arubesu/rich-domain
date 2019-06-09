@@ -1,5 +1,6 @@
 
 using System;
+using Flunt.Validations;
 using PaymentContext.Domain.ValueObjects;
 using PaymentContext.Shared.Entities;
 
@@ -21,6 +22,12 @@ namespace PaymentContext.Domain.Entities
             Payer = payer;
             PayerDocument = payerDocument;
             PayerEmail = payerEmail;
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsGreaterThan(TotalPaid, 0m, "Payment.TotalPaid","Total paid must be greater than 0.")
+                .IsGreaterOrEqualsThan(TotalPaid, Total, "Payment.TotalPaid","Total paid must be equals the Total.")
+            );
         }
 
         public Guid Code { get; private set; }

@@ -1,3 +1,4 @@
+using Flunt.Validations;
 using PaymentContext.Shared.Entities;
 
 namespace PaymentContext.Domain.ValueObjects
@@ -9,11 +10,13 @@ namespace PaymentContext.Domain.ValueObjects
             FirstName = firstName;
             LastName = lastName;
 
-            if (string.IsNullOrEmpty(FirstName))
-                AddNotification("FirstName", "Invalid Name");
-
-            if (string.IsNullOrEmpty(LastName))
-                AddNotification("LastName", "Invalid Name");
+            AddNotifications(new Contract()
+                .Requires()
+                .HasMinLen(FirstName,3,"Name.FirstName","FirstName must have at least 3 characters!")
+                .HasMinLen(LastName,3,"Name.LastName","LastName must have at least 3 characters!")
+                .IsNotNullOrEmpty(FirstName,"Name.FirstName","FirstName cannot be null or empty")
+                .IsNotNullOrEmpty(LastName,"Name.LastName","LastName cannot be null or empty")
+            );
         }
 
         public string FirstName { get; private set; }
