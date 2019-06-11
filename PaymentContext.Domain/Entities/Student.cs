@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Flunt.Validations;
 using PaymentContext.Domain.ValueObjects;
 using PaymentContext.Shared.Entities;
 
@@ -26,10 +27,21 @@ namespace PaymentContext.Domain.Entities
 
         public void AddSubscription(Subscription subscription)
         {
+            var hasActiveSubscription = false;
             foreach (var sub in Subscriptions)
-                sub.Inactivate();
+            {
+                if (sub.Active)
+                    hasActiveSubscription = true;
+            }
 
-            _subscriptions.Add(subscription);
+            AddNotifications(new Contract()
+                .Requires()
+                .IsGreaterThan(subscription.Payments.Count, 0, "Student.Subscriptions.Payments", "The subscription must have a payment!")
+                .IsFalse(hasActiveSubscription, "Student.Subscription.Active", "The Student Already have an active subscription!")
+               );
+
+            if (this.Valid)
+                _subscriptions.Add(subscription);
         }
     }
 }
